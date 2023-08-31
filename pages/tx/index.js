@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { txState } from "../../state/atoms";
+import { globalState } from "../../state/atoms";
 import { styled } from "styled-components";
 import { FaRegEdit } from "react-icons/fa";
-import {AiOutlineRollback} from "react-icons/ai"
 import { Formik, Form } from "formik";
 
 const Heading = styled.div`
@@ -38,49 +37,35 @@ const StyledInput = styled.input`
 export default function Transaction() {
   const [data, setData] = useState({});
   const [edit, setEdit] = useState(false);
-  const [txData,setTxData]= useRecoilState(txState)
   const router = useRouter();
   console.log("data", data);
 
   useEffect(() => {
     const preload = async () => {
-     setTimeout(()=>{
-      const id = router.query.tx?router.query.tx:null;
-      if(id)
-      setData(txData[id])
-     },1000)
+      const response = await fetch(`/api/transactions/${router.query.tx}`, {
+        method: "GET",
+      });
+      if (response && response.ok) {
+        const abc = await response.json();
+        setData(abc.tx);
+      } else throw new Error(`Error with code ${response?.status}`);
     };
 
     preload();
-  },[router.query.tx,txData]);
+  }, [router]);
 
-  const handleSubmit=(values)=>{
-
-    let x = {...txData};
-    x[values.tx]=values;
-    console.log("HAHA",values,x);
-    setTxData(x);
-
-  }
   return (
     <div className="flex flex-col px-6 py-10 text-4xl text-center bg-white text-black h-[100vh] w-full items-center">
       Transaction Details
       {data && (
         <div className="flex flex-col text-left mt-20 mx-20 w-2/4 ">
           <div className="flex flex-row-reverse">
-            <button className="mx-2"
+            <button
               onClick={() => {
                 setEdit(!edit);
               }}
             >
               <FaRegEdit />
-            </button>
-            <button
-              onClick={() => {
-                router.push('/')
-              }}
-            >
-              <AiOutlineRollback />
             </button>
           </div>
           {edit && (
@@ -92,7 +77,6 @@ export default function Transaction() {
               {
                 <Formik
                   initialValues={{
-                    tx:data.tx,
                     date: data.date,
                     invoice: data.invoice,
                     payer: data.payer,
@@ -100,7 +84,7 @@ export default function Transaction() {
                     amount: data.amount,
                     status: data.status,
                   }}
-                  onSubmit={(values) => {handleSubmit(values)}}
+                  onSubmit={(values) => {}}
                 >
                   {({ values, setFieldValue, touched, errors }) => {
                     return (
@@ -154,7 +138,7 @@ export default function Transaction() {
                           }}
                         />
                         <br/><br/>
-                        <button type="submit" className="border-3 bg-blue-600 px-3 rounded-[5px]">Save</button>
+                        <button className="border-3 bg-blue-600 px-3 rounded-[5px]">Save</button>
                       </Form>
                     );
                   }}
