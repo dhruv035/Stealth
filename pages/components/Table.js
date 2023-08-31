@@ -18,7 +18,7 @@ const Table = (props) => {
       <thead className="bg-zinc-100 h-[70px]">
         <tr className="border-y-2 mx-2" key={0}>
           {headings.map((element, index) => {
-            return <th className="mx-4"><div className="ml-3">{element}</div></th>;
+            return <th key={index+"Head"} className="mx-4"><div className="ml-3">{element}</div></th>;
           })}
         </tr>
       </thead>
@@ -43,7 +43,7 @@ const Table = (props) => {
                 else if (key === 7)
                   {
                     return (
-                    <td>
+                    <td key={key}>
                       <div className="flex flex-row justify-between mt-4 ml-3 text-[14px]">
                         <div className="flex flex-col w-[50px]">
                           <div className="h-[5px] bg-blue-900 w-[50px]"></div>
