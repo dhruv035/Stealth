@@ -57,7 +57,9 @@ export default function Transaction() {
   const handleSubmit=(values)=>{
 
     let x = {...txData};
+    let usd=txData[values.tx].usd;
     x[values.tx]=values;
+    x[values.tx].usd=usd;
     console.log("HAHA",values,x);
     setTxData(x);
 
