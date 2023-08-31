@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Card from "./components/Card";
 import { useEffect, useState } from "react";
 import Table from "./components/Table";
-import { getData } from "./mocker";
 import { useRecoilState } from "recoil";
 import { txState } from "./state/atoms";
 import data from "../public/data"
