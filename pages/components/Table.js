@@ -17,7 +17,7 @@ const Table = (props) => {
     <table className="mt-5 text-[16px] border-x-2 px-2">
       <thead className="bg-zinc-100 h-[70px]">
         <tr className="border-y-2 mx-2" key={0}>
-          {headings.map((element) => {
+          {headings.map((element, index) => {
             return <th className="mx-4"><div className="ml-3">{element}</div></th>;
           })}
         </tr>
@@ -27,7 +27,7 @@ const Table = (props) => {
           const arr = Object.values(elementIn);
           
           return (
-            <tr className="border-y-2">
+            <tr key={elementIn.tx} className="border-y-2">
               {arr.map((element, key) => {
                 if (key === 2)
                   return (
