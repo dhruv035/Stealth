@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import data from "../../public/data"
+import data from "../public/data"
 
 
 export const txState = atom({
